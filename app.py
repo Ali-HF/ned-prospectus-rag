@@ -1,17 +1,18 @@
 """Streamlit chat interface for the NED Undergraduate Prospectus RAG assistant.
 
-High-End UI inspired by modern engineering sites (Sentec aesthetic):
-- Prominent Hero Section with typography & animated engineering compass medallion
-- No left sidebar: replaced with top tactical floating command bar & controls
-- Subtle tactical grid, radial ambient lighting, glassmorphism cards
+Clean, high-end tactical UI:
+- Sleek minimalist command bar with live indicators
+- Collapsible / auto-compact hero section to keep chat prominent
+- Slower 160s ambient rotation on the engineering compass medallion
+- Smooth, deliberate status transitions (Retrieving -> Sleuthing -> Honing -> Triangulating)
+- Automatic scroll tracking to keep latest messages in view without awkward page scrolling
 - Expandable citation drawers & live verification badges
-- Clean multi-turn chat stream with source verification
 """
 
 from pathlib import Path
-import random
 import time
 import streamlit as st
+import streamlit.components.v1 as components
 
 import config
 from rag import answer_with_sources
@@ -30,7 +31,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom High-End Styling (No left sidebar, rich ambient glow, animated compass)
+# Custom High-End Styling & Scroll Fixes
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
@@ -47,20 +48,20 @@ st.markdown("""
 .stApp {
     background-color: #08090b;
     background-image: 
-        radial-gradient(circle at 75% 15%, rgba(255, 75, 17, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 75% 15%, rgba(255, 75, 17, 0.1) 0%, transparent 45%),
         radial-gradient(circle at 20% 80%, rgba(255, 75, 17, 0.05) 0%, transparent 40%),
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
     color: #e2e8f0;
     font-family: 'Inter', -apple-system, sans-serif;
 }
 
-/* Main Container constraint */
+/* Constrain main block cleanly with breathing room for fixed chat input */
 .main .block-container {
-    max-width: 1200px !important;
-    padding-top: 1.5rem !important;
-    padding-bottom: 5rem !important;
+    max-width: 960px !important;
+    padding-top: 1rem !important;
+    padding-bottom: 7rem !important;
 }
 
 /* Top Tactical Navigation Bar */
@@ -68,113 +69,116 @@ st.markdown("""
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.9rem 1.6rem;
-    background: rgba(14, 17, 22, 0.7);
-    backdrop-filter: blur(14px);
+    padding: 0.65rem 1.25rem;
+    background: rgba(14, 17, 22, 0.75);
+    backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 12px;
-    margin-bottom: 2.2rem;
+    border-radius: 10px;
+    margin-bottom: 1.2rem;
 }
 
 .brand-wrap {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .brand-badge {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    border-radius: 5px;
     background: linear-gradient(135deg, #ff551f, #d93d0b);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     color: #fff;
-    box-shadow: 0 0 15px rgba(255, 85, 31, 0.4);
+    box-shadow: 0 0 12px rgba(255, 85, 31, 0.35);
 }
 
 .brand-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.15rem;
+    font-size: 0.98rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     color: #ffffff;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 14px;
     font-family: 'Space Grotesk', monospace;
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     color: #94a3b8;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 
 .status-indicator {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    background: rgba(34, 197, 94, 0.1);
-    border: 1px solid rgba(34, 197, 94, 0.25);
+    gap: 5px;
+    padding: 3px 8px;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.22);
     border-radius: 100px;
     color: #4ade80;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 600;
 }
 .status-indicator::before {
     content: "";
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     background-color: #22c55e;
     border-radius: 50%;
-    box-shadow: 0 0 8px #22c55e;
+    box-shadow: 0 0 6px #22c55e;
 }
 
-/* Hero Split Layout */
+/* Hero Section */
 .hero-wrapper {
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 3rem;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 2rem;
     align-items: center;
-    margin-bottom: 2.8rem;
-    padding: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    background: rgba(14, 18, 25, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 800px) {
     .hero-wrapper {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1.2rem;
     }
 }
 
 .sys-label {
     font-family: 'Space Grotesk', monospace;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: #ff551f;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 0.75rem;
+    gap: 8px;
+    margin-bottom: 0.5rem;
 }
 
 .hero-main-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 3.4rem;
+    font-size: 2.3rem;
     font-weight: 700;
-    line-height: 1.04;
+    line-height: 1.1;
     color: #ffffff;
-    letter-spacing: -0.04em;
-    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.6rem;
 }
 .hero-main-title span {
     color: #ff551f;
@@ -184,47 +188,45 @@ st.markdown("""
 }
 
 .hero-description {
-    font-size: 1.05rem;
-    line-height: 1.6;
+    font-size: 0.92rem;
+    line-height: 1.55;
     color: #94a3b8;
-    margin-bottom: 1.5rem;
-    max-width: 560px;
+    margin-bottom: 1rem;
 }
 
 /* Stat Counters */
 .stat-strip {
     display: flex;
-    gap: 2rem;
-    margin-top: 1.2rem;
+    gap: 1.6rem;
+    margin-top: 0.8rem;
 }
 .stat-item {
     font-family: 'Space Grotesk', sans-serif;
 }
 .stat-val {
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #ffffff;
 }
 .stat-label {
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     color: #64748b;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
 }
 
-/* Medallion / Compass Graphic */
+/* Medallion / Compass Graphic (Subtle, slower 160s rotation) */
 .medallion-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
 }
 
 .medallion-svg {
     width: 100%;
-    max-width: 380px;
-    filter: drop-shadow(0 0 35px rgba(255, 85, 31, 0.18));
-    animation: slow-rotate 60s linear infinite;
+    max-width: 220px;
+    filter: drop-shadow(0 0 25px rgba(255, 85, 31, 0.16));
+    animation: slow-rotate 160s linear infinite;
 }
 
 @keyframes slow-rotate {
@@ -232,25 +234,13 @@ st.markdown("""
     to { transform: rotate(360deg); }
 }
 
-/* Tactical Action Bar */
-.action-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1.25rem;
-    background: rgba(18, 22, 28, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    margin-bottom: 1.5rem;
-}
-
 /* Chat Messages */
 div[data-testid="stChatMessage"] {
     background-color: rgba(14, 18, 24, 0.75) !important;
     border: 1px solid rgba(255, 255, 255, 0.07) !important;
     border-radius: 10px !important;
-    padding: 1.2rem 1.5rem !important;
-    margin-bottom: 1rem !important;
+    padding: 1rem 1.35rem !important;
+    margin-bottom: 0.85rem !important;
     backdrop-filter: blur(10px) !important;
 }
 
@@ -265,36 +255,25 @@ div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
     border-left: 3px solid rgba(255, 255, 255, 0.25) !important;
 }
 
+/* Status widget styling */
+div[data-testid="stStatusWidget"] {
+    background: rgba(16, 20, 28, 0.85) !important;
+    border: 1px solid rgba(255, 85, 31, 0.3) !important;
+    border-left: 3px solid #ff551f !important;
+    border-radius: 8px !important;
+    transition: all 0.4s ease-in-out !important;
+}
+
 /* Source Box Component */
-.citation-box {
-    margin-top: 1rem;
-    padding: 0.85rem 1.1rem;
-    background: rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(255, 85, 31, 0.22);
-    border-radius: 8px;
-    font-family: 'Space Grotesk', monospace;
-    font-size: 0.8rem;
-    color: #cbd5e1;
-}
-.citation-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #ff551f;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-}
 .citation-badge {
     display: inline-block;
-    padding: 4px 10px;
-    background: rgba(255, 85, 31, 0.12);
-    border: 1px solid rgba(255, 85, 31, 0.35);
-    border-radius: 6px;
-    margin-top: 6px;
-    margin-right: 8px;
-    font-size: 0.76rem;
+    padding: 3px 8px;
+    background: rgba(255, 85, 31, 0.1);
+    border: 1px solid rgba(255, 85, 31, 0.28);
+    border-radius: 5px;
+    margin-top: 4px;
+    margin-right: 6px;
+    font-size: 0.72rem;
     font-family: 'Space Grotesk', monospace;
     color: #fdba74;
 }
@@ -304,11 +283,11 @@ div[data-testid="stExpander"] {
     background-color: rgba(10, 13, 18, 0.6) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 8px !important;
-    margin-top: 0.75rem !important;
+    margin-top: 0.6rem !important;
 }
 div[data-testid="stExpander"] summary {
     font-family: 'Space Grotesk', monospace !important;
-    font-size: 0.78rem !important;
+    font-size: 0.74rem !important;
     font-weight: 600 !important;
     color: #94a3b8 !important;
     letter-spacing: 0.04em !important;
@@ -318,41 +297,47 @@ div[data-testid="stExpander"] summary:hover {
 }
 div[data-testid="stExpander"] div[role="region"] {
     border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
-    padding-top: 0.5rem !important;
+    padding-top: 0.4rem !important;
 }
 
-/* Custom Chat Input Bar */
+/* Custom Chat Input Bar - pinned cleanly */
+div[data-testid="stChatInput"] {
+    border-radius: 10px !important;
+    padding-bottom: 0.5rem !important;
+}
 div[data-testid="stChatInput"] textarea {
-    background-color: #0f131a !important;
+    background-color: #0d1117 !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     color: #ffffff !important;
     border-radius: 8px !important;
     font-family: 'Inter', sans-serif !important;
-    padding: 0.75rem 1rem !important;
+    padding: 0.65rem 0.95rem !important;
+    font-size: 0.92rem !important;
 }
 div[data-testid="stChatInput"] textarea:focus {
     border-color: #ff551f !important;
-    box-shadow: 0 0 12px rgba(255, 85, 31, 0.25) !important;
+    box-shadow: 0 0 10px rgba(255, 85, 31, 0.25) !important;
 }
 
 /* Primary Action Buttons */
 .stButton > button {
     background: rgba(255, 255, 255, 0.04) !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
-    color: #e2e8f0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #cbd5e1 !important;
     font-family: 'Space Grotesk', monospace !important;
-    font-size: 0.78rem !important;
+    font-size: 0.72rem !important;
     font-weight: 600 !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.06em !important;
     text-transform: uppercase !important;
     border-radius: 6px !important;
+    padding: 0.35rem 0.8rem !important;
     transition: all 0.2s ease !important;
 }
 .stButton > button:hover {
     background: #ff551f !important;
     border-color: #ff551f !important;
     color: #ffffff !important;
-    box-shadow: 0 0 14px rgba(255, 85, 31, 0.4) !important;
+    box-shadow: 0 0 12px rgba(255, 85, 31, 0.35) !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -374,80 +359,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Big Sentec-Style Hero Section with Animated Medallion
-st.markdown("""
-<div class="hero-wrapper">
-    <div>
-        <div class="sys-label">SYS.01 / ONLINE &nbsp;•&nbsp; OFFICIAL ADMISSIONS COPILOT</div>
-        <div class="hero-main-title">
-            Make the admissions<br><span>tangible.</span>
-        </div>
-        <div class="hero-description">
-            NED Guide turns 122 pages of scanned prospectus text into instant, verifiable intelligence. 
-            Direct citations, merit formulas, seat quotas, and fee schedules grounded strictly in the 
-            <strong>Undergraduate Prospectus 2025</strong> with zero hallucinations.
-        </div>
-        <div class="stat-strip">
-            <div class="stat-item">
-                <div class="stat-val">122</div>
-                <div class="stat-label">Pages Indexed</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-val">562</div>
-                <div class="stat-label">Neural Chunks</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-val">0.62</div>
-                <div class="stat-label">Safety Cutoff</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-val">0.0s</div>
-                <div class="stat-label">Out-of-Scope Fallback</div>
-            </div>
-        </div>
-    </div>
-    <div class="medallion-container">
-        <svg class="medallion-svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Outer Compass Rings -->
-            <circle cx="200" cy="200" r="190" stroke="#ff551f" stroke-width="1.2" stroke-dasharray="4 6" opacity="0.45" />
-            <circle cx="200" cy="200" r="176" stroke="#ffffff" stroke-width="1" opacity="0.25" />
-            <circle cx="200" cy="200" r="148" stroke="#ffffff" stroke-width="0.75" stroke-dasharray="2 4" opacity="0.3" />
-            <circle cx="200" cy="200" r="100" stroke="#ff551f" stroke-width="1.5" opacity="0.6" />
-            
-            <!-- Cardinal Compass Needle Points -->
-            <polygon points="200,10 206,180 200,200 194,180" fill="#ff551f" />
-            <polygon points="200,390 206,220 200,200 194,220" fill="#ffffff" opacity="0.5" />
-            <polygon points="10,200 180,206 200,200 180,194" fill="#ffffff" opacity="0.5" />
-            <polygon points="390,200 220,206 200,200 220,194" fill="#ffffff" opacity="0.5" />
-            
-            <!-- Diagonal Ticks -->
-            <line x1="65" y1="65" x2="180" y2="180" stroke="#ffffff" stroke-width="0.7" opacity="0.35" />
-            <line x1="335" y1="65" x2="220" y2="180" stroke="#ffffff" stroke-width="0.7" opacity="0.35" />
-            <line x1="65" y1="335" x2="180" y2="220" stroke="#ffffff" stroke-width="0.7" opacity="0.35" />
-            <line x1="335" y1="335" x2="220" y2="220" stroke="#ffffff" stroke-width="0.7" opacity="0.35" />
-            
-            <!-- Center Core & Gear Geometry -->
-            <circle cx="200" cy="200" r="62" fill="#0d1117" stroke="#ff551f" stroke-width="2" />
-            <circle cx="200" cy="200" r="42" stroke="#ffffff" stroke-width="1" stroke-dasharray="3 3" opacity="0.6" />
-            <polygon points="200,165 210,190 235,190 215,205 222,230 200,215 178,230 185,205 165,190 190,190" fill="#ff551f" opacity="0.85" />
-            <circle cx="200" cy="200" r="10" fill="#ffffff" />
-        </svg>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# Tactical Action Toolbar
-col_ctrl1, col_ctrl2 = st.columns([0.78, 0.22])
-
-with col_ctrl1:
-    show_sources = st.toggle("Display Verified Citations & Similarity Scores", value=True)
-
-with col_ctrl2:
-    if st.button("RESET CONVERSATION"):
-        st.session_state["messages"] = []
-        st.rerun()
-
-# Initial conversation state
+# Initialize messages state
 GREETING = (
     "Hello! I am **NED Guide**, your virtual assistant for the official NED Undergraduate Prospectus 2025. "
     "I answer using only official prospectus data: eligibility requirements, merit formulas, seat quotas under Regular and Self-Finance, fee schedules, scholarships, and campus regulations."
@@ -457,6 +369,81 @@ if "messages" not in st.session_state or not st.session_state["messages"]:
     st.session_state["messages"] = [
         {"role": "assistant", "content": GREETING, "sources": []}
     ]
+
+has_conversation = len(st.session_state["messages"]) > 1
+
+# Hero Section: Full display if fresh session, compact collapsible if conversation in progress
+if not has_conversation:
+    st.markdown("""
+    <div class="hero-wrapper">
+        <div>
+            <div class="sys-label">SYS.01 / ONLINE &nbsp;•&nbsp; OFFICIAL ADMISSIONS COPILOT</div>
+            <div class="hero-main-title">
+                Make the admissions<br><span>tangible.</span>
+            </div>
+            <div class="hero-description">
+                NED Guide turns 122 pages of scanned prospectus text into instant, verifiable intelligence. 
+                Direct citations, merit formulas, seat quotas, and fee schedules grounded strictly in the 
+                <strong>Undergraduate Prospectus 2025</strong> with zero hallucinations.
+            </div>
+            <div class="stat-strip">
+                <div class="stat-item">
+                    <div class="stat-val">122</div>
+                    <div class="stat-label">Pages Indexed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">562</div>
+                    <div class="stat-label">Neural Chunks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">0.62</div>
+                    <div class="stat-label">Safety Cutoff</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val">0.0s</div>
+                    <div class="stat-label">Safety Shield</div>
+                </div>
+            </div>
+        </div>
+        <div class="medallion-container">
+            <svg class="medallion-svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="200" cy="200" r="190" stroke="#ff551f" stroke-width="1.2" stroke-dasharray="4 6" opacity="0.4" />
+                <circle cx="200" cy="200" r="176" stroke="#ffffff" stroke-width="1" opacity="0.2" />
+                <circle cx="200" cy="200" r="148" stroke="#ffffff" stroke-width="0.75" stroke-dasharray="2 4" opacity="0.25" />
+                <circle cx="200" cy="200" r="100" stroke="#ff551f" stroke-width="1.5" opacity="0.5" />
+                
+                <polygon points="200,10 206,180 200,200 194,180" fill="#ff551f" />
+                <polygon points="200,390 206,220 200,200 194,220" fill="#ffffff" opacity="0.4" />
+                <polygon points="10,200 180,206 200,200 180,194" fill="#ffffff" opacity="0.4" />
+                <polygon points="390,200 220,206 200,200 220,194" fill="#ffffff" opacity="0.4" />
+                
+                <circle cx="200" cy="200" r="62" fill="#0d1117" stroke="#ff551f" stroke-width="2" />
+                <circle cx="200" cy="200" r="42" stroke="#ffffff" stroke-width="1" stroke-dasharray="3 3" opacity="0.5" />
+                <polygon points="200,165 210,190 235,190 215,205 222,230 200,215 178,230 185,205 165,190 190,190" fill="#ff551f" opacity="0.85" />
+                <circle cx="200" cy="200" r="10" fill="#ffffff" />
+            </svg>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    with st.expander("ℹ️ Prospectus Overview & System Metrics", expanded=False):
+        st.caption(
+            "Grounded in official **NED Undergraduate Prospectus 2025** • 122 pages indexed • 562 neural chunks • "
+            "BM25 + ChromaDB Reciprocal Rank Fusion • Similarity threshold 0.62."
+        )
+
+# Tactical Action Toolbar
+col_ctrl1, col_ctrl2 = st.columns([0.8, 0.2])
+
+with col_ctrl1:
+    show_sources = st.toggle("Display Verified Citations", value=True)
+
+with col_ctrl2:
+    if st.button("RESET CHAT"):
+        st.session_state["messages"] = [
+            {"role": "assistant", "content": GREETING, "sources": []}
+        ]
+        st.rerun()
 
 # Render conversation history
 for msg in st.session_state["messages"]:
@@ -487,11 +474,25 @@ if user_input:
         ]
 
         with st.chat_message("assistant"):
-            status_labels = ["Retrieving...", "Sleuthing...", "Honing...", "Triangulating..."]
-            initial_label = random.choice(status_labels)
-            with st.status(initial_label, expanded=False) as status:
-                st.caption("Searching prospectus chunks & synthesizing verified response...")
+            # Smooth, deliberate multi-phase transitions
+            with st.status("Retrieving...", expanded=False) as status:
+                st.caption("Scanning 122 prospectus pages & dense neural vectors...")
+                time.sleep(0.7)
+                
+                status.update(label="Sleuthing...", state="running")
+                st.caption("Cross-referencing BM25 keywords & rank fusion scores...")
+                time.sleep(0.7)
+
+                status.update(label="Honing...", state="running")
+                st.caption("Filtering top candidate chunks against 0.62 similarity threshold...")
+                
+                # Fetch answer from RAG engine
                 result = answer_with_sources(clean_input, history=history_for_rag)
+                
+                status.update(label="Triangulating...", state="running")
+                st.caption("Synthesizing verified citations & grounds...")
+                time.sleep(0.5)
+
                 status.update(label="Response verified", state="complete", expanded=False)
 
             bot_answer = result["answer"]
@@ -511,3 +512,17 @@ if user_input:
             "content": bot_answer,
             "sources": bot_sources
         })
+
+# Auto-scroll anchor component ensuring input and latest message remain cleanly in focus
+components.html(
+    """
+    <script>
+    setTimeout(function() {
+        const doc = window.parent.document;
+        const main = doc.querySelector('.main') || doc.documentElement;
+        main.scrollTo({ top: main.scrollHeight, behavior: 'smooth' });
+    }, 150);
+    </script>
+    """,
+    height=0,
+)
