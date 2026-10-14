@@ -114,17 +114,12 @@ def rewrite_question_for_followup(
         if not history_lines:
             return question
 
-        # Heuristic: only call rewrite LLM if query is ambiguous or pronoun-dependent
+        # Check if question is already a fully standalone query about NED
         q_words = set(re.findall(r"\w+", question.lower()))
-        followup_signals = {
-            "it", "this", "that", "these", "those", "them", "they", "its", "there",
-            "here", "same", "else", "other", "another", "more", "then", "and", "also",
-            "how", "what", "which", "why", "where", "tell", "fee", "fees"
-        }
-        # If question is long and does not use ambiguous follow-up pronouns, it is already standalone
-        is_short = len(q_words) <= 7
-        has_followup_signal = bool(q_words & {"it", "this", "that", "these", "those", "its", "them", "same", "else", "another"})
-        if not is_short and not has_followup_signal:
+        q_lower = question.lower()
+        has_ned = "ned" in q_lower or "prospectus" in q_lower
+        is_long_standalone = len(q_words) > 10 and has_ned and not bool(q_words & {"it", "this", "that", "these", "those", "its", "them", "same", "else", "another"})
+        if is_long_standalone:
             return question
 
         history_context = "\n".join(history_lines)
