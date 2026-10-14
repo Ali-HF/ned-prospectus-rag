@@ -21,16 +21,26 @@
   - Generated `extracted.txt` and `chunks_debug.jsonl`.
 - Executed `ingest.py`: produced 562 chunks, verified ChromaDB vector count equals exactly 562, and confirmed clean cosine similarity separation between in-domain questions (~0.71-0.73) and out-of-domain sanity checks (<0.48).
 
+- Updated `config.py` with initial `SCORE_THRESHOLD = 0.58`.
+- Generated 15 verified in-scope questions in `in_scope.txt` and 15 plausible out-of-scope questions in `out_scope.txt`.
+- Implemented `retrieve(query: str, k: int = config.TOP_K)` in `rag.py` returning `(chunk_text, page, section, similarity)` sorted best first with cosine similarity (`1 - distance`).
+- Implemented `debug_retrieve.py` for interactive retrieval inspection.
+- Implemented and executed `calibrate.py`: evaluated queries with and without BGE query prefix; identified WITHOUT prefix gives the tighter gap (`-0.1422` vs `-0.1716`). Reported min/median/max stats and analyzed overlap on top-1 similarity scores.
+- Tested `debug_retrieve.py` against 5 representative in-scope queries: confirmed all 5 have their exact ground truth chunk ranked #1 in top-5 results.
+
 ## In progress
-- Ingestion complete; ready to implement retrieval and QA pipeline in `rag.py`.
+- Ready for full QA generation pipeline in `rag.py` and UI implementation in `app.py`.
 
 ## Decisions
 - PDF is scanned. Source of truth is `data/UGProspectus2025_ocr.txt` (split into `data/ocr/page_NNN.txt`). Page metadata = PDF page index (state the offset if any: printed page number = PDF page index - 7 for main body from PDF page 8 onwards). Do not use pdfplumber on the PDF.
 - Maintained `TEMPERATURE = None` and `MAX_TOKENS = 1500` per Gemini 3 recommendations in `SPEC.md`.
+- Set starting `SCORE_THRESHOLD = 0.58` in `config.py`. Retrieval keeps queries WITHOUT prefix based on calibration results.
+- Top-5 retrieval precision is verified at 100% top-1 rank across sample in-scope queries; kept `TOP_K = 5` and chunk size 900.
 
 ## Known issues
 - `data/manual.pdf` has no embedded character glyphs; all content relies on OCR text extraction.
 - In `data/UGProspectus2025_ocr.txt`, complex multi-column grid tables (e.g., fee schedules and seat allocations) appear as plain-text rows/columns or one-value-per-line rather than markdown pipe tables (`|`).
+- Top-1 cosine similarities for plausible out-of-scope queries mentioning the institution name ("NED University") overlap with in-scope queries, making pure score thresholding insufficient alone; full RAG prompt grounding with fallback response is necessary.
 
 ## Next step
-- Implement `rag.py` exposing `answer(question: str, history: list | None = None) -> str` adhering to the prompt template and rate-limit retry requirements.
+- Implement full `answer(question: str, history: list | None = None) -> str` in `rag.py` using system prompt template, Gemini API with rate-limit retries, and fallback handling.

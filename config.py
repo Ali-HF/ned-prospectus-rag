@@ -25,7 +25,7 @@ def get_pdf_path():
 PDF_PATH = get_pdf_path()
 
 # Model & generation settings
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 MAX_TOKENS = 1500
 TEMPERATURE = None
 
@@ -33,7 +33,7 @@ TEMPERATURE = None
 CHUNK_SIZE = 900
 CHUNK_OVERLAP = 150
 TOP_K = 5
-SCORE_THRESHOLD = 0.40
+SCORE_THRESHOLD = 0.58
 
 # Embedding settings
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
