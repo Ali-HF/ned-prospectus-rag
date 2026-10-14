@@ -732,24 +732,25 @@ export default function App() {
             onClick={() => handleSend()}
             disabled={loading || !input.trim()}
             style={{
-              background: input.trim() ? "#ff551f" : "rgba(255, 255, 255, 0.05)",
-              border: "none",
-              color: "#fff",
-              padding: "8px 16px",
+              background: input.trim() ? "rgba(255, 85, 31, 0.9)" : "rgba(255, 255, 255, 0.05)",
+              border: `1px solid ${input.trim() ? "rgba(255, 85, 31, 0.4)" : "rgba(255, 255, 255, 0.08)"}`,
+              color: input.trim() ? "#ffffff" : "#64748b",
+              padding: "6px 12px",
               borderRadius: 8,
               cursor: input.trim() ? "pointer" : "not-allowed",
               display: "flex",
               alignItems: "center",
-              gap: 6,
+              gap: 5,
               fontFamily: "Space Grotesk, sans-serif",
-              fontWeight: 700,
-              fontSize: "0.8rem",
-              boxShadow: input.trim() ? "0 0 14px rgba(255, 85, 31, 0.4)" : "none",
+              fontWeight: 600,
+              fontSize: "0.74rem",
+              letterSpacing: "0.02em",
+              boxShadow: input.trim() ? "0 0 10px rgba(255, 85, 31, 0.3)" : "none",
               transition: "all 0.15s ease",
             }}
           >
-            <span>TRANSMIT</span>
-            <Send size={13} />
+            <span>Send</span>
+            <Send size={11} />
           </button>
         </div>
       </footer>

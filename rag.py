@@ -85,8 +85,19 @@ def rewrite_question_for_followup(
         return question
 
     try:
-        # Take last 2 turns
-        recent = history[-2:]
+        # Ignore initial greeting message from assistant so first user query isn't rewritten
+        filtered_history = [
+            item for item in history
+            if not (
+                (isinstance(item, dict) and item.get("role") == "assistant" and "Hello! I am" in str(item.get("content", "")))
+                or (isinstance(item, (list, tuple)) and len(item) == 2 and item[0] == "assistant" and "Hello! I am" in str(item[1]))
+            )
+        ]
+        if not filtered_history:
+            return question
+
+        # Take last 2 turns from filtered history
+        recent = filtered_history[-2:]
         history_lines = []
         for item in recent:
             role = ""
