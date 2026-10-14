@@ -1,0 +1,122 @@
+UNDERGRADUATE “%
+PROSPECTUS 2025
+
+* NED UNIVERSITY *¥?
+
+OF ENGINEERING & TECHNOLOGY
+
+3.1.10 Computer Systems Engineering
+
+FIRST YEAR
+Fall Semester Spring Semester
+Course 1 Credit Hours Course “ Credit Hours
+Code Course Title Th Pr Total Code Course Title Th Pr Total
+
+1 3 CS-117 Discrete Structures
+
+CS-116 Object Oriented Programming
+
+EE-125 Basic Electrical Engineering
+
+ES-108 Ideology and Constitution of Pakistan
+
+ES-206 / Islamic Studies OR
+
+ES-209 Ethical Behaviour
+
+MT-221 Linear Algebra & Ordinary Differential
+Equations
+
+EF-101 IT Fundamentals and Applications
+
+CS-115 Computer Programming
+
+MT-116 Calculus & Analytical Geometry
+
+EA-128 Functional English
+
+ES-105 / Pakistan Studies OR
+
+ES-127 Pakistan Studies (For Foreigners)
+
+PH-129 Applied Physics
+
+CY-100 Essentials of Chemistry
+(Only for computer Science students)
+
+Ww NWWWN
+o ooo
+
+2
+
+BY Nwwe
+Ww NNWWW
+Oo COPRRO
+Ww NNSRW
+
+SECOND YEAR
+Fall Semester Spring Semester
+Course Credit Hours Course Credit Hours
+
+Code Course Tite Th Pr Total Code Colfse:Titte Th Pr Total
+
+CS-220 Digital Logic Design 3 2t 4 CS-221 Computer Organization & Design 4
+CS-218 Data Structures & Algorithms a. 2 4 CS-215 Signals and Systems
+EA-218 Business Communication Zw A 3 CS-222 Database Management Systems
+EL-106 Basic Electronics 3: 7 4 CS-326 Software Engineering
+EF-309 Occupational Health and Safety 1 =O 1 CS-219 Computer Engineering Workshop
+CS-253 Sustainable Engineering Practices 1 0 1 EF-201 Civics and Community Engagement
+EF-200 Community Service
+THIRD YEAR
+Fall Semester Spring Semester
+Course Credit Hours Course - Credit Hours
+Code Course Title Th Pr Total Code Course:title Th Pr Total
+CS-327 Computer Communication Networks 3 1 4 CS-329 Operating Systems 3 1 4
+CS-328 Computer Architecture 3 0 3 CS-301 Microprocessor Based System Design 3 1 4
+CS-373 Artificial Intelligence & Machine Learning 3 1 4 CS-34X —_Elective-I (Al Domain) 2 1 3
+MT-335 Probability & Statistics 3 0 3 MT-442 Numerical Methods 3 0 3
+CS-419 Digital Signal Processing 3 1 4 EF-305 Engineering Economics & Management 3 0 =
+EA/ES-### Foreign Language | NC
+
+FINAL YEAR
+
+Fall Semester Spring Semester
+Course 5 Credit Hours Course 7 Credit Hours
+Code Course Title h Pr Total Code Course Title Th Pr Total
+CS-406 Computer Engineering Design Project* CS-406 Computer Engineering Design Project* ie}
+CS-431 Digital System Design CS-45X_Elective-Ill (System Design Domain)
+CS-36X_—_Elective-Il (Network / Cyberspace Domain) CS-46X_Elective-IV (Software Engineering Domain) 2
+CS-471 Modeling and simulation CS-472 Entrepreneurship for Computer Engineers 2
+CS-432 Distributed Computing CS-371 Project Management 2
+EA/ES-### Foreign Language II CS-372 Professional Ethics 2
+Al Domain Network / Cyberspace Domain
+Elective-I (2+1) (to be chosen from the following) Elective-II (2+0) (to be chosen from the following)
+Deep Learning CS-361 Cyber Security
+Computer Vision CS-362 Computer Systems Security
+Natural Language Processing CS-363 Internet Computing
+Reinforcement Learning CS-364 Digital Communication Systems
+Bioinformatics CS-365 Cloud Computing
+Virtual and Augmented Reality CS-366 Block chain Technology
+Robotic Systems Design CS-367 Wireless Sensor Networks
+
+System Design Domain _ Software Engineering Domain
+Elective-ill (2+1) (to be chosen from the following) Elective-IV (2+1) (to be chosen from the following)
+
+CS-452 Digital IC Design CS-461 Software Development and Testing
+
+CS-453 Embedded Systems Design for High CS-462 Parallel Application development
+Performance Applications CS-463 Big Data Applleations framework
+
+CS-454 Internet of Medical Things (loMT) CS-464 Mobile Applications Development
+
+CS-455 Mixed Signal IC Design CS-465 Big Data Analytics
+
+CS-456 pecooteurae Computing CS-466 GPGPU programming
+
+CS-457 Cyber Physical Systems
+
+* Duration one academic year: Requires literature survey and preliminary work during this Semester
+
+€ www.neduet.edu.pk
+
+NEDUET Official

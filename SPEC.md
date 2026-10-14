@@ -2,8 +2,7 @@
 Goal: a chatbot for an edtech product that answers ONLY from one PDF manual, never invents features, and stays calm with rude users.
 
 Stack (do not substitute anything):
-- Python 3.11+, virtual environment in .venv
-- PDF parsing: pdfplumber
+- PDF parsing: PDF is scanned. Source of truth is data/UGProspectus2025_ocr.txt (split into data/ocr/page_NNN.txt). Page metadata = PDF page index (state the offset if any: printed page number = PDF page index - 7 for main body from PDF page 8 onwards). Do not use pdfplumber on the PDF.
 - Chunking: langchain-text-splitters RecursiveCharacterTextSplitter
 - Embeddings: sentence-transformers model BAAI/bge-small-en-v1.5, run locally through langchain-huggingface
 - Vector store: ChromaDB through langchain-chroma, saved in ./chroma_db, cosine distance

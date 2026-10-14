@@ -8,22 +8,29 @@
 - Created configuration in `config.py` with all tunable RAG/LLM parameters and dynamic PDF path resolution (`data/manual.pdf` & `data/UGProspectus2025.pdf`).
 - Created `system_prompt.txt`, `fallback.txt`, `.env.example`, `.env`, and `.gitignore`.
 - Placed target prospectus in `data/manual.pdf` (and `data/UGProspectus2025.pdf`).
-- Created placeholder files for `SPEC.md`: `ingest.py`, `rag.py`, `app.py`, `README.md`.
 - Verified setup via `check_setup.py`: verified all packages import OK, embedding model produces vector length 384, and Gemini API generates response.
-- Initialized local Git repository on `main` and committed updates.
+- Stopped active background OCR runners (`ocr_pdf.py` and `ocr_local.py`).
+- Adopted `data/UGProspectus2025_ocr.txt` as official source of truth, verified 122 pages, and split into `data/ocr/page_001.txt` ... `data/ocr/page_122.txt`.
+- Implemented `ingest.py` with:
+  - Automatic detection of `data/ocr/page_NNN.txt` (or fallback to `data/UGProspectus2025_ocr.txt`).
+  - Printed page offset resolution (`printed_page = page - 7`).
+  - Cleaning recurring header/footer lines (>25% repetition threshold) and hyphenated word repair.
+  - Section title tracking (e.g. `4.1 Title`, `SECTION 5`, or short ALL-CAPS lines).
+  - Table-aware chunking (preserving blocks under 1500 chars, repeating header on split, boundary mid-sentence continuation handling).
+  - Batch embedding with `BAAI/bge-small-en-v1.5` (offline cache, batch size 32) into ChromaDB `prospectus` collection (`hnsw:space: cosine`).
+  - Generated `extracted.txt` and `chunks_debug.jsonl`.
+- Executed `ingest.py`: produced 562 chunks, verified ChromaDB vector count equals exactly 562, and confirmed clean cosine similarity separation between in-domain questions (~0.71-0.73) and out-of-domain sanity checks (<0.48).
 
 ## In progress
-- Ready to implement document ingestion pipeline in `ingest.py`.
+- Ingestion complete; ready to implement retrieval and QA pipeline in `rag.py`.
 
 ## Decisions
-- Switched LLM provider to Google Gemini per user instruction to use `ChatGoogleGenerativeAI` and free-tier access.
-- Implemented dynamic PDF path discovery in `config.py` prioritizing `data/manual.pdf` and `data/UGProspectus2025.pdf`.
+- PDF is scanned. Source of truth is `data/UGProspectus2025_ocr.txt` (split into `data/ocr/page_NNN.txt`). Page metadata = PDF page index (state the offset if any: printed page number = PDF page index - 7 for main body from PDF page 8 onwards). Do not use pdfplumber on the PDF.
 - Maintained `TEMPERATURE = None` and `MAX_TOKENS = 1500` per Gemini 3 recommendations in `SPEC.md`.
-- Configured automatic fallback in `check_setup.py` to nearest available flash model (`gemini-2.5-flash`) when `gemini-3.8-flash` hits daily free-tier quota limits (429 RESOURCE_EXHAUSTED).
-- Set `HF_HUB_OFFLINE=1` in `config.py` so the embedding model loads strictly from local cache.
 
 ## Known issues
-- Free-tier quota on `gemini-3.8-flash` is currently rate-limited (429 RESOURCE_EXHAUSTED); `gemini-2.5-flash` works reliably without quota errors.
+- `data/manual.pdf` has no embedded character glyphs; all content relies on OCR text extraction.
+- In `data/UGProspectus2025_ocr.txt`, complex multi-column grid tables (e.g., fee schedules and seat allocations) appear as plain-text rows/columns or one-value-per-line rather than markdown pipe tables (`|`).
 
 ## Next step
-- Implement `ingest.py` for parsing `data/manual.pdf` with `pdfplumber`, chunking with `RecursiveCharacterTextSplitter`, and persisting embeddings in `./chroma_db`.
+- Implement `rag.py` exposing `answer(question: str, history: list | None = None) -> str` adhering to the prompt template and rate-limit retry requirements.

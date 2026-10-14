@@ -1,0 +1,102 @@
+UNDERGRADUATE ©? NED UNIVERSITY «
+
+PROSPECTUS 2025 OF ENGINEERING & TECHNOLOGY
+
+Fall Semester Spring Semester
+
+Course - Credit Hours Course “ Credit Hours
+
+Code Course Title Th Pr Total Code Course Title Th Pr Total
+CT-### © Artificial Intelligence Elective | # # 3 CT-### Artificial Intelligence Elective III # # 3
+CT-### Artificial Intelligence Elective II # # 3 CT-351 Knowledge Representation and Reasoning 3 0 3
+CT-361 Artificial Intelligence and Expert Systems 3 i 4 CT-376 Computer Communication Networks 3 1 4
+CT-353 Operating Systems Ss 41 4 CS-428 Parallel and Distributed Computing 3 1 4
+CT-363 Design and Analysis of Algorithms 3 0 3 CT-392 Machine Learning 3 4 4
+
+EA/ES-### Foreign Language - | - - NC
+
+FINAL YEAR (Specialisation: Artificial Intelligence)
+
+Fall Semester Spring Semester
+
+Course " Credit Hours Course - Credit Hours
+
+Code Course:ritie Th Pr Total Code Course:ritie Th Pr Total
+CT-499 Computer Science Project* 0 3 3 CT-499 Computer Science Project* 0 3 3
+CT-### © Artificial Intelligence Elective IV # # 3 CT-### Artificial Intelligence Elective VI # # 3
+CT-466 Artificial Neural Networks 3 0 3 CT-486 Network and Information Security 3 1 4
+CT-### © Artificial Intelligence Elective V # # 3 CT-467 Image Processing and Computer Vision 5 4 4
+MG-482 Organisational Behavior 3 0 3  MG-481 Entrepreneurship 3 0 3
+
+NC
+
+EA / ES-### Foreign Language - II
+
+CT-358 Fuzzy Systems
+CT-359 Knowledge Based Systems
+
+and Design
+CT-264 Programming for Artificial Intelligence
+
+RPRRRR
+WWWww
+corRoCO
+WwWwWww
+
+CT-368 Fundamentals of Data Science 2 CT-390 Web Applications and Services 2
+CT-266 Fundamentals of Cybersecurity 2 CT-377 Data Mining 3
+CT-267. Fundamentals of Game Development 2 CT-357 Speech Processing 3
+
+Elective — IV Artificial Intelligence (to be chosen from the following)
+
+Elective — V & VI Artificial Intelligence (to be chose! the following)
+
+CT-468 Deep Learning 3 0 3 CT-485 Natural Language Processing (DC) 3 0 3
+CT-403__ Blockchain Technologies 2 1 3 CT-407 Human Computer Interaction 3 0 3
+CT-470 Swarm Intelligence 3 0 3 CT-469 Reinforcement Learning 3 0 3
+CT-411 Introduction to Quantum Computing 3 0 mi CT-410 Generative Al 3 0 3
+THIRD YEAR (Specialisation: Cyber Security)
+Fall Semester Spring Semester
+Course Course Title Credit Hours Course Course Title Credit Hours
+Code Th Pr Total Code Th Pr Total
+CT-### © Cyber Security Elective | # # 3 CT-### Cyber Security Elective III # # 3
+CT-### Cyber Security Elective II # # 3 MG-482 Organisational Behavior 3 0 3
+CT-363 Design and Analysis of Algorithms 3 0 3 CT-361 Artificial Intelligence and Expert Systems 3 1 4
+CT-376 Computer Communication Networks 3 1 4 CT-353 Operating Systems 3 1 4
+CT-390 Web Applications and Services 2 4 3 CT-476 Information Assurance 3 0 3
+EA/ES-### Foreign Language - | - - NC
+FINAL YEAR (Specialisation: Cyber Security)
+Fall Semester Spring Semester
+Course * Credit Hours Course . Credit Hours
+Code Course Title Th Pr Total Code Course Title Th Pr Total
+CT-499 Computer Science Project* 0 3 3 CT-499 Computer Science Project 0 3 3
+CT-### © Cyber Security Elective IV # # 3 CT-### Cyber Security Elective VI # # 3
+CT-486 Network and Information Security 3 1 4 CT-477 Secure Software Design and Development 3 4 4
+CS-428 Parallel and Distributed Computing 3 4 4  MG-481 Entrepreneurship 3.0 3
+CT-### Cyber Security Elective V # # 4 CT-478 Digital Forensics 2 1 3
+
+NC
+
+EA / ES-### Foreign Language — II
+
+Elective — | Cyber Security (to be chosen from the following) Elective — Il & Ill Cyber Security (to be chosen fro!
+
+CT-263 Object Oriented Analysis and Design
+CT-264 Programming for Artificial Intelligence
+CT-368 Fundamentals of Data Science
+CT-266 Fundamentals of Cybersecurity
+CT-267 Fundamentals of Game Development
+
+CT-374 Cybersecurity Laws and Regulations 3 0 3
+CT-375 Cryptography and Cryptanalysis 3 0 3
+CT-355_ Information Security 3 0 3
+CT-372 Wireless and Mobile Security 3 0 3
+CT-373 Penetration Testing 3 0 3
+
+NNNNN
+RRRRR
+WWwwWwww
+
+@® www.neduet.edu
+
+9) NEDUET Official

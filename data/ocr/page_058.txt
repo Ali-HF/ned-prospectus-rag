@@ -1,0 +1,99 @@
+UNDERGRADUATE “%
+PROSPECTUS 2025
+
+> NED UNIVERSITY ©?
+
+OF ENGINEERING & TECHNOLOGY
+
+3.2 Bachelor of Science Programm
+
+3.2.1 Computer Science
+
+FIRST YEAR (Common to all Specialisations)
+
+Fall Semester Spring Semester
+
+Course Course Title Credit Hours Course Course Title Credit Hours
+
+Code Th Pr Total Code Th Pr Total
+EF-101 IT Fundamentals and Applications 2 4 3 CS-251 Logic Design and Switching Theory 3 1 4
+CT-175 Programming Fundamentals 3 1 4 CT-162 Discrete Structures 3 0 3
+EA-128 Functional English 3 0 3 CT-260 Object Oriented Programming Ss & 4
+ES-206 Islamic Studies OR 2 0 2 MT-116 Calculus & Analytical Geometry 3 0 3
+ES-209 _ Ethical Behaviour (for Non-Muslims) ES-105 Pakistan Studies OR 2 0 2
+
+PH-129 Applied Physics
+ES-108 Ideology and Constitution of Pakistan
+MT-100 Introduction to Mathematics (for Pre-Medical)
+
+SECOND YEAR (Common to all Specialisations)
+
+3 ES-127 Pakistan Studies (for Foreigners)
+2
+
+Nw
+
+0)
+0)
+- NC
+
+Fall Semester Spring Semester
+
+Course Course Title Credit Hours Course Course Title Credit Hours
+
+Code Th Pr Total Code Th Pr Total
+CT-159 Data Structure Algorithms and Applications 3 1 4 CS-252 Computer Architecture and Organization 3 i 4
+MT-221 Linear Algebra & Ordinary Differential Equations 3 0 a CT-261 Database Management Systems 3 1 4
+MT-331 Probability and Statistics 3 0 3 CT-365 Software Engineering 3 0 3
+EA-244 Academic Reading and Writing 3 0 3 EC-209 Financial and Cost Accounting 3 0 3
+CT-268 Professional Ethics 2 0 2  MT-226 Multivariable Calculus 3 0 3
+EF-201 Civics and Community Engagement 2 0 2 EF-200 Community Service - »* NC
+
+THIRD YEAR (Computer Science)
+
+Fall Semester Spring Semester
+
+Course Course Title Credit Hours Course Course Title Credit Hours
+
+Code Th Pr Total Code Th Pr Total
+CT-### Computer Science Elective | # # 3 CT-### Computer Science Elective III # # 3
+CT-### Computer Science Elective II # # 3: CT-376 Computer Communication Networks 3 1 4
+CT-262 Introduction to Artificial Intelligence 2 £ Ss CT-353 Operating Systems 3 1 4
+CT-362 Web Engineering 3 #1 4 CT-363 Design and Analysis of Algorithms 3 0 3
+CT-364 Theory of Automata and Formal Languages 3 0 3 CT-### Computer Science Elective IV # # 3
+
+EA/ES-### Foreign Language - | - - NC
+
+FINAL YEAR (Computer Science)
+
+Fall Semester Spring Semester
+Course . Credit Hours Course . Credit Hours
+Code Course |itte Th Pr Total Code Course: tite Th Pr Total
+
+CT-499 Computer Science Project* 3 CT-499 Computer Science Project*
+CT-### Computer Science Elective V 4 CT-### Computer Science Elective VI
+CT-486 Network and Information Security 4 CS-428 Parallel and Distributed Computing
+MG-482 Organisational Behaviour 3 CT-465 Compiler Design
+CT-407_ Human Computer Interaction 3 MG-481 Entrepreneurship
+
+EA / ES-### Foreign Language - II
+
+1 wWwwto
+'OoOortW
+wWwwwto
+CORXtW
+wwe pw
+
+NC
+
+Elective — | Computer Science (to be chosen from the following) Computer Science (to be chosen
+
+CT-263 Object Oriented Analysis and Design 2 #1 3 MT-442 Numerical Methods 3 0 3
+CT-264 Programming for Artificial Intelligence 2 =#1 3 CT-377 Data Mining 3 0 3
+CT-368 Fundamentals of Data Science 2 1 3 CT-378 Machine Learning 3 0 3
+CT-266 Fundamentals of Cybersecurity 2 41 3
+CT-267 Fundamentals of Game Development 2 #1 3
+
+€ www.neduet.edu.pk
+
+)) NEDUET Official

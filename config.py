@@ -39,3 +39,11 @@ SCORE_THRESHOLD = 0.40
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 EMBEDDING_MODEL_NAME = EMBEDDING_MODEL
+EMBEDDING_BATCH_SIZE = 32
+
+# ChromaDB collection settings
+COLLECTION_NAME = "prospectus"
+
+# Page offset (printed page number = PDF page index - 7 for main body starting at PDF page 8)
+PRINTED_PAGE_OFFSET = 7
+

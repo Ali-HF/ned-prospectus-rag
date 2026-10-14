@@ -1,0 +1,159 @@
+> NED UNIVERSITY
+
+OF ENGINEERING & TECHNOLOGY
+
+%
+
+o
+PROSPECTUS 2025
+
+FINAL YEAR (Specialisation: Data Science)
+
+Fall Semester
+
+Course Course Title Credit Hours
+Code Th Pr Total
+CT-499 Computer Science Project* 0 3 3
+CT-### Data Science Elective IV # # =
+CT-472 Data Warehousing and Business Intelligence 3 1 4
+CT-471 Data Analysis and Visualisation 3 1 4
+CS-428 Parallel and Distributed Computing 3 1 4
+EA / ES-### Foreign Language - II - - NC
+
+Spring Semester
+
+Course Course Title Credit Hours
+
+Code Th Pr Total
+CT-499 Computer Science Project* 0 3 3
+CT-### Data Science Elective V # # 3
+MG-482 Organisational Behavior 3 0 3
+MG-481 Entrepreneurship 3 0 3
+CT-### Data Science Elective VI # # 3
+
+Elective — | Data Science (to be chosen from the following)
+
+CT-263 Object Oriented Analysis and Design 2 #1
+CT-264 Programming for Artificial Intelligence 2 4
+CT-368 Fundamentals of Data Science 2 1
+CT-266 Fundamentals of Cybersecurity 2 1
+CT-267. Fundamentals of Game Development 2 #1
+
+Elective — IV Data Science (to be chosen from the following)
+CT-466 Artificial Neural Networks 3 0
+CT-403 Blockchain Technologies 2 #1
+CT-475 Privacy Preservation 3 0
+CT-411 Introduction to Quantum Computing 3 0
+
+wwwww
+
+Www ww
+
+Elective —Il & Ill Data Science (to be chosen from the following)
+
+CT-369 Business Process Analysis 3 0 3
+CT-370 Platform and Architecture for DataScience 3 O 3
+CT-390 Web Applications and Services 2 1 3
+CT-378 Machine Learning 3 0 3
+CT-357 Speech Processing 3 0 3
+Elective — V & VI Data Science (to be chosen from the following)
+
+CT-468 Deep Learning 3 0 3
+CT-473 Cloud Computing 3 0 3
+CT-474 Text Mining 3 0 5
+CT-410 Generative Al 3 0 3
+CT-469 Reinforcement Learning 3 0 3
+
+THIRD YEAR (Specialisation:
+
+Fall Semester
+Course
+
+Code Soumse, Tite Th Pr Total
+CT-### Cyber Security Elective | # # 3
+CT-### Cyber Security Elective I! # # 3
+CT-363 Design and Analysis of Algorithms 3 0 3
+CT-376 Computer Communication Networks a 41 4
+CT-390 Web Applications and Services z 4 3
+
+FINAL YEAR (Specialisation:
+
+Credit Hours
+
+Cyber Security)
+
+Spring Semester
+
+Course Course Title Credit Hours
+Code Th Pr Total
+CT-### Cyber Security Elective III # # 3
+MG-482 Organisational Behavior 3 0 3
+CT-361 Artificial Intelligence and Expert Systems 3 4 4
+CT-353 Operating Systems 3 2 4
+CT-476 Information Assurance 3 0 3
+EA/ES-### Foreign Language - | - - NC
+
+Fall Semester
+
+Course Course Title Credit Hours
+Code Th Pr Total
+CT-499 Computer Science Project* 0 3 3
+CT-### Cyber Security Elective IV # # 3
+CT-486 Network and Information Security 3 4 4
+CS-428 Parallel and Distributed Computing 3 1 4
+CT-### Cyber Security Elective V # # 4
+EA / ES-### Foreign Language — II - - NC
+
+Elective — | Cyber Security (to be chosen from the following)
+
+Cyber Security)
+Spring Semester
+
+Course Course Title Credit Hours
+
+Code Th Pr Total
+CT-499 Computer Science Project* 0 3 3
+CT-### Cyber Security Elective VI # # 3
+CT-477 Secure Software Design and Development 3 1 4
+MG-481 Entrepreneurship 3 0 3
+CT-478 Digital Forensics 2 2 3
+
+Elective — II & Ill Cyber Security (to be chosen from the following)
+
+CT-263 Object Oriented Analysis and Design 2 =#1
+CT-264 Programming for Artificial Intelligence 2 i
+CT-368 Fundamentals of Data Science 2 #1
+CT-266 Fundamentals of Cybersecurity 2 #1
+CT-267 Fundamentals of Game Development 2 #1
+
+wWwwww
+
+CT-374 Cybersecurity Laws and Regulations 3 0 3
+CT-375 Cryptography and Cryptanalysis 3 0 3
+CT-355 Information Security 3 0 3
+CT-372 Wireless and Mobile Security 3 0 3
+CT-373 Penetration Testing 3 0 z
+
+Elective — IV Cyber Security (to be chosen from the following)
+
+CT-479 Hardware Security 3 0
+CT-403 Blockchain Technologies 2 #1
+CT-489 Embedded Systems Security 3 0
+CT-411 Introduction to Quantum Computing 3 0
+
+€ www.neduet.edu.pk
+
+¢)(¥) NEDUET Official
+
+wwww
+
+CT-371 Vulnerability Assessment and Reverse 3 1 4
+Engineering
+
+CT-481 Wireless Network and Mobile Computing 3 1 4
+
+CT-480 Malware Analysis 3 0 3
+
+CT-490 Quantum Security 3 0 3
+
+UNDERGRADUATE “%
