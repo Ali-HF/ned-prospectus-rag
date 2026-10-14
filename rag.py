@@ -114,6 +114,19 @@ def rewrite_question_for_followup(
         if not history_lines:
             return question
 
+        # Heuristic: only call rewrite LLM if query is ambiguous or pronoun-dependent
+        q_words = set(re.findall(r"\w+", question.lower()))
+        followup_signals = {
+            "it", "this", "that", "these", "those", "them", "they", "its", "there",
+            "here", "same", "else", "other", "another", "more", "then", "and", "also",
+            "how", "what", "which", "why", "where", "tell", "fee", "fees"
+        }
+        # If question is long and does not use ambiguous follow-up pronouns, it is already standalone
+        is_short = len(q_words) <= 7
+        has_followup_signal = bool(q_words & {"it", "this", "that", "these", "those", "its", "them", "same", "else", "another"})
+        if not is_short and not has_followup_signal:
+            return question
+
         history_context = "\n".join(history_lines)
         prompt = (
             "Given the following conversation history and the follow-up question, rewrite the follow-up "
@@ -395,6 +408,77 @@ def answer_with_sources(
             return {"answer": apology, "sources": sources}
 
     return {"answer": apology, "sources": sources}
+
+
+def stream_answer_with_sources(question: str, history: list[dict[str, str]] | list[Any] | None = None):
+    """Generator yielding {'type': 'sources', 'data': sources} then {'type': 'token', 'data': token}."""
+    cleaned_question = question.strip() if question else ""
+    if not cleaned_question:
+        yield {"type": "sources", "data": []}
+        yield {"type": "token", "data": "Please ask a question about the NED Undergraduate Prospectus 2025."}
+        return
+
+    retrieval_query = cleaned_question
+    if history:
+        retrieval_query = rewrite_question_for_followup(cleaned_question, history)
+
+    raw_chunks = retrieve(retrieval_query)
+    filtered_chunks = [
+        chunk for chunk in raw_chunks
+        if chunk[3] >= config.SCORE_THRESHOLD
+    ]
+
+    q_lower = cleaned_question.lower().strip("?!.,:; ")
+    greetings = {"hi", "hello", "hey", "good morning", "good afternoon", "good evening", "how are you", "how are u", "how are u doing", "how are you doing", "how are u doing today", "how are you doing today", "thanks", "thank you", "salam", "assalam o alaikum", "aao"}
+    is_greeting = q_lower in greetings or any(q_lower.startswith(g + " ") for g in ["hi", "hello", "hey", "salam"])
+
+    if not filtered_chunks and not is_greeting:
+        yield {"type": "sources", "data": []}
+        yield {"type": "token", "data": load_fallback_text()}
+        return
+
+    sources = [(chunk[1], chunk[2], chunk[3]) for chunk in filtered_chunks]
+    yield {"type": "sources", "data": sources}
+
+    context_blocks = []
+    for text, page, section, _ in filtered_chunks:
+        header = f"[Page {page} | {section}]" if section else f"[Page {page}]"
+        context_blocks.append(f"{header} {text.strip()}")
+    context = "\n\n".join(context_blocks)
+
+    prompt_template = load_system_prompt_template()
+    system_prompt = prompt_template.replace("{context}", context)
+
+    messages: list[Any] = [SystemMessage(content=system_prompt)]
+    if history:
+        recent_history = history[-4:]
+        for item in recent_history:
+            role = ""
+            content = ""
+            if isinstance(item, dict):
+                role = str(item.get("role", "")).lower()
+                content = str(item.get("content", ""))
+            elif isinstance(item, (list, tuple)) and len(item) == 2:
+                role = str(item[0]).lower()
+                content = str(item[1])
+
+            if role in ("user", "human"):
+                messages.append(HumanMessage(content=content))
+            elif role in ("assistant", "ai", "bot"):
+                messages.append(AIMessage(content=content))
+
+    messages.append(HumanMessage(content=cleaned_question))
+
+    llm = get_llm()
+    try:
+        for chunk in llm.stream(messages):
+            token_text = _extract_text(chunk.content)
+            if token_text:
+                yield {"type": "token", "data": token_text}
+    except Exception as exc:
+        logger.warning("Streaming failed, falling back to invoke: %s", exc)
+        res = answer_with_sources(question, history)
+        yield {"type": "token", "data": res["answer"]}
 
 
 def answer(question: str, history: list[dict[str, str]] | list[Any] | None = None) -> str:

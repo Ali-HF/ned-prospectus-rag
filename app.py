@@ -15,7 +15,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 import config
-from rag import answer_with_sources
+from rag import answer_with_sources, stream_answer_with_sources
 
 # Ensure ChromaDB index exists on startup
 CHROMA_DIR = Path(config.CHROMA_PERSIST_DIRECTORY)
@@ -318,30 +318,26 @@ if user_input:
         ]
 
         with st.chat_message("assistant", avatar=None):
-            # Smooth Claude-style status transitions
-            with st.status("Retrieving...", expanded=False) as status:
-                st.caption("Scanning 122 prospectus pages and dense neural vectors...")
-                time.sleep(0.7)
-                
-                status.update(label="Sleuthing...", state="running")
-                st.caption("Cross-referencing BM25 keywords and rank fusion scores...")
-                time.sleep(0.7)
+            status_container = st.status("Retrieving...", expanded=False)
+            status_container.caption("Scanning 122 prospectus pages and dense neural vectors...")
 
-                status.update(label="Honing...", state="running")
-                st.caption("Filtering candidate chunks against 0.62 similarity threshold...")
-                
-                # Fetch answer from RAG engine
-                result = answer_with_sources(clean_input, history=history_for_rag)
-                
-                status.update(label="Triangulating...", state="running")
-                st.caption("Synthesizing verified citations and grounds...")
-                time.sleep(0.5)
+            generator = stream_answer_with_sources(clean_input, history=history_for_rag)
+            bot_sources = []
 
-                status.update(label="Response verified", state="complete", expanded=False)
+            # First item from generator gives sources
+            first_item = next(generator, None)
+            if first_item and first_item.get("type") == "sources":
+                bot_sources = first_item.get("data", [])
 
-            bot_answer = result["answer"]
-            bot_sources = result.get("sources", [])
-            st.markdown(bot_answer)
+            status_container.update(label="Response verified", state="complete", expanded=False)
+
+            def token_stream():
+                for item in generator:
+                    if item.get("type") == "token":
+                        yield item.get("data", "")
+
+            bot_answer = st.write_stream(token_stream())
+
             if show_sources and bot_sources:
                 with st.expander(f"Prospectus Sources ({len(bot_sources)} citations)", expanded=False):
                     badges = []
