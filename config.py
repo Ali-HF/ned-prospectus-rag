@@ -36,5 +36,6 @@ TOP_K = 5
 SCORE_THRESHOLD = 0.40
 
 # Embedding settings
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
 EMBEDDING_MODEL = "BAAI/bge-small-en-v1.5"
 EMBEDDING_MODEL_NAME = EMBEDDING_MODEL
