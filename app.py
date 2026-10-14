@@ -1,12 +1,12 @@
 """Streamlit chat interface for the NED Undergraduate Prospectus RAG assistant.
 
-Clean, high-end Claude-style minimalist interface:
-- Minimalist Claude aesthetic: warm neutral dark background, refined typography, generous line spacing
-- Clean floating header with subtle model/source badges
-- No distracting hero banner; full focus directly on conversation stream
+Clean, high-end Claude-identical interface:
+- Minimalist Claude aesthetic: warm neutral dark background (#1f1e1d / #262524), refined typography, generous line spacing
+- Clean header with subtle indicator and Clear conversation action
+- Zero emojis across the entire interface (clean plain text and semantic indicators)
 - Claude-style thinking status drawer (Retrieving -> Sleuthing -> Honing -> Triangulating)
-- Automatic scroll tracking to ensure input and latest message remain cleanly in focus
-- Verified citations expander for full transparent grounding
+- Automatic scroll tracking ensuring input and latest message remain cleanly in focus
+- Clean collapsible citations drawer for source transparency
 """
 
 from pathlib import Path
@@ -26,12 +26,11 @@ if not CHROMA_DIR.exists() or not any(CHROMA_DIR.iterdir()):
 
 st.set_page_config(
     page_title="NED Guide",
-    page_icon="✦",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# Claude-Style Minimalist Styling
+# Claude-Identical Minimalist Styling
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -41,48 +40,48 @@ st.markdown("""
     display: none !important;
 }
 
-/* Base Body: Claude-like deep warm charcoal canvas */
+/* Base Body: Claude warm dark canvas */
 .stApp {
-    background-color: #18181b;
+    background-color: #1f1e1d;
     color: #ececec;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
-/* Constrain main block to a focused reading column just like Claude */
+/* Constrain main block to focused Claude reading column */
 .main .block-container {
-    max-width: 780px !important;
+    max-width: 760px !important;
     padding-top: 1.25rem !important;
     padding-bottom: 7.5rem !important;
 }
 
-/* Claude-Style Minimal Top Bar */
+/* Claude Top Navigation Bar */
 .claude-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.6rem 0.2rem 1.2rem;
+    padding: 0.5rem 0 1.2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
 }
 
 .claude-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
-.claude-icon {
+.claude-avatar {
     width: 28px;
     height: 28px;
-    border-radius: 7px;
-    background: #cc5a2b;
+    border-radius: 6px;
+    background: #c96442;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Newsreader', serif;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #ffffff;
 }
 
@@ -96,25 +95,25 @@ st.markdown("""
 
 .claude-sub {
     font-size: 0.75rem;
-    color: #a1a1aa;
+    color: #9c9a95;
     font-weight: 400;
 }
 
-.claude-pills {
+.claude-meta {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .claude-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 3px 9px;
+    padding: 3px 8px;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 100px;
-    color: #a1a1aa;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    color: #9c9a95;
     font-size: 0.72rem;
     font-family: 'JetBrains Mono', monospace;
 }
@@ -122,136 +121,144 @@ st.markdown("""
 .claude-badge-dot {
     width: 5px;
     height: 5px;
-    background-color: #22c55e;
+    background-color: #4ade80;
     border-radius: 50%;
 }
 
-/* Chat Message Bubbles: Claude Clean Minimal Style */
+/* Chat Messages: Pure Claude Clean Flow */
 div[data-testid="stChatMessage"] {
     background-color: transparent !important;
     border: none !important;
-    padding: 1.2rem 0 !important;
-    margin-bottom: 0.5rem !important;
+    padding: 1.1rem 0 !important;
+    margin-bottom: 0.25rem !important;
 }
 
-/* Assistant Message: Clean Typography with generous breathing room */
-div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) {
-    background-color: transparent !important;
-    border-left: none !important;
+/* Remove default Streamlit user & assistant avatar icons */
+div[data-testid="stChatMessage"] img,
+div[data-testid="stChatMessage"] svg {
+    display: none !important;
 }
 
+/* Assistant Message Typography */
 div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-assistant"]) [data-testid="stMarkdownContainer"] {
     font-size: 0.98rem !important;
-    line-height: 1.68 !important;
-    color: #e4e4e7 !important;
+    line-height: 1.7 !important;
+    color: #ececec !important;
 }
 
-/* User Message: subtle pill background */
+/* User Message: Claude-like soft rounded container */
 div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) {
-    background-color: rgba(255, 255, 255, 0.04) !important;
-    border-radius: 12px !important;
-    padding: 0.9rem 1.2rem !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    background-color: #2b2a27 !important;
+    border-radius: 14px !important;
+    padding: 0.85rem 1.15rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    margin-left: 2rem !important;
+    margin-bottom: 0.85rem !important;
 }
 
-/* Status widget styling (Claude-like Thinking drawer) */
+div[data-testid="stChatMessage"]:has(div[data-testid="chatAvatarIcon-user"]) [data-testid="stMarkdownContainer"] {
+    font-size: 0.95rem !important;
+    color: #f4f4f5 !important;
+}
+
+/* Status widget styling (Claude-like Thinking box) */
 div[data-testid="stStatusWidget"] {
-    background: rgba(39, 39, 42, 0.5) !important;
+    background: #262523 !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 8px !important;
+    border-radius: 6px !important;
     font-size: 0.82rem !important;
-    color: #d4d4d8 !important;
-    padding: 0.2rem 0.5rem !important;
+    color: #c4c2bc !important;
+    padding: 0.25rem 0.6rem !important;
     margin-bottom: 0.75rem !important;
 }
 
 /* Citations Expanders */
 div[data-testid="stExpander"] {
-    background-color: rgba(24, 24, 27, 0.4) !important;
+    background-color: rgba(38, 37, 35, 0.45) !important;
     border: 1px solid rgba(255, 255, 255, 0.07) !important;
-    border-radius: 8px !important;
-    margin-top: 0.75rem !important;
+    border-radius: 6px !important;
+    margin-top: 0.65rem !important;
 }
 
 div[data-testid="stExpander"] summary {
     font-family: 'JetBrains Mono', monospace !important;
     font-size: 0.74rem !important;
-    color: #a1a1aa !important;
+    color: #9c9a95 !important;
+    letter-spacing: 0.02em !important;
 }
 
 div[data-testid="stExpander"] summary:hover {
-    color: #cc5a2b !important;
+    color: #c96442 !important;
 }
 
 .citation-badge {
     display: inline-block;
     padding: 3px 8px;
-    background: rgba(204, 90, 43, 0.12);
-    border: 1px solid rgba(204, 90, 43, 0.28);
+    background: rgba(201, 100, 66, 0.12);
+    border: 1px solid rgba(201, 100, 66, 0.28);
     border-radius: 4px;
     margin-top: 4px;
     margin-right: 6px;
     font-size: 0.72rem;
     font-family: 'JetBrains Mono', monospace;
-    color: #fdba74;
+    color: #f0a382;
 }
 
 /* Minimalist Chat Input Bar pinned cleanly at bottom */
 div[data-testid="stChatInput"] {
-    max-width: 780px !important;
+    max-width: 760px !important;
     margin: 0 auto !important;
-    border-radius: 12px !important;
     padding-bottom: 0.75rem !important;
 }
 
 div[data-testid="stChatInput"] textarea {
-    background-color: #27272a !important;
+    background-color: #2b2a27 !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: #f4f4f5 !important;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
     font-family: 'Inter', sans-serif !important;
     padding: 0.75rem 1rem !important;
     font-size: 0.95rem !important;
 }
 
 div[data-testid="stChatInput"] textarea:focus {
-    border-color: #cc5a2b !important;
-    box-shadow: 0 0 0 1px #cc5a2b !important;
+    border-color: #c96442 !important;
+    box-shadow: 0 0 0 1px #c96442 !important;
 }
 
-/* Reset / Action Buttons */
+/* Toggle & Reset Controls */
 .stButton > button {
     background: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #a1a1aa !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    color: #9c9a95 !important;
     font-size: 0.74rem !important;
-    border-radius: 6px !important;
-    padding: 0.25rem 0.65rem !important;
+    border-radius: 5px !important;
+    padding: 0.2rem 0.6rem !important;
     transition: all 0.15s ease !important;
 }
 
 .stButton > button:hover {
     color: #ffffff !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Claude-Style Top Bar
+# Minimal Top Navigation
 st.markdown("""
 <div class="claude-nav">
     <div class="claude-brand">
-        <div class="claude-icon">✦</div>
+        <div class="claude-avatar">N</div>
         <div>
             <div class="claude-title">NED Guide</div>
             <div class="claude-sub">Undergraduate Prospectus 2025</div>
         </div>
     </div>
-    <div class="claude-pills">
+    <div class="claude-meta">
         <div class="claude-badge">
             <span class="claude-badge-dot"></span>
-            122 Pgs Indexed
+            122 pages verified
         </div>
     </div>
 </div>
@@ -259,7 +266,7 @@ st.markdown("""
 
 # Initial conversation state
 GREETING = (
-    "Hello! I am **NED Guide**, your assistant for the official NED Undergraduate Prospectus 2025. "
+    "Hello. I am NED Guide, an assistant for the official NED Undergraduate Prospectus 2025. "
     "I answer using only official prospectus data: eligibility requirements, merit formulas, seat quotas under Regular and Self-Finance, fee schedules, scholarships, and campus regulations."
 )
 
@@ -286,7 +293,7 @@ for msg in st.session_state["messages"]:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
         if show_sources and msg.get("sources"):
-            with st.expander(f"🔍 Prospectus Sources ({len(msg['sources'])} citations)", expanded=False):
+            with st.expander(f"Prospectus Sources ({len(msg['sources'])} citations)", expanded=False):
                 badges = []
                 for page, section, sim in msg["sources"]:
                     sec_str = f" • {section}" if section else ""
@@ -312,21 +319,21 @@ if user_input:
         with st.chat_message("assistant"):
             # Smooth Claude-style status transitions
             with st.status("Retrieving...", expanded=False) as status:
-                st.caption("Scanning 122 prospectus pages & dense neural vectors...")
+                st.caption("Scanning 122 prospectus pages and dense neural vectors...")
                 time.sleep(0.7)
                 
                 status.update(label="Sleuthing...", state="running")
-                st.caption("Cross-referencing BM25 keywords & rank fusion scores...")
+                st.caption("Cross-referencing BM25 keywords and rank fusion scores...")
                 time.sleep(0.7)
 
                 status.update(label="Honing...", state="running")
-                st.caption("Filtering top candidate chunks against 0.62 similarity threshold...")
+                st.caption("Filtering candidate chunks against 0.62 similarity threshold...")
                 
                 # Fetch answer from RAG engine
                 result = answer_with_sources(clean_input, history=history_for_rag)
                 
                 status.update(label="Triangulating...", state="running")
-                st.caption("Synthesizing verified citations & grounds...")
+                st.caption("Synthesizing verified citations and grounds...")
                 time.sleep(0.5)
 
                 status.update(label="Response verified", state="complete", expanded=False)
@@ -335,7 +342,7 @@ if user_input:
             bot_sources = result.get("sources", [])
             st.markdown(bot_answer)
             if show_sources and bot_sources:
-                with st.expander(f"🔍 Prospectus Sources ({len(bot_sources)} citations)", expanded=False):
+                with st.expander(f"Prospectus Sources ({len(bot_sources)} citations)", expanded=False):
                     badges = []
                     for page, section, sim in bot_sources:
                         sec_str = f" • {section}" if section else ""
