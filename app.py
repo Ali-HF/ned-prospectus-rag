@@ -2,9 +2,9 @@
 
 Clean, high-end Claude-identical interface:
 - Minimalist Claude aesthetic: warm neutral dark background (#1f1e1d / #262524), refined typography, generous line spacing
-- Clean header with subtle indicator and Clear conversation action
-- Zero emojis across the entire interface (clean plain text and semantic indicators)
-- Claude-style thinking status drawer (Retrieving -> Sleuthing -> Honing -> Triangulating)
+- Clean minimal top bar with page count indicator and Clear chat action
+- Completely hidden Streamlit robot/user avatar badges; pure clean editorial text
+- Smooth Claude-style thinking status drawer (Retrieving -> Sleuthing -> Honing -> Triangulating)
 - Automatic scroll tracking ensuring input and latest message remain cleanly in focus
 - Clean collapsible citations drawer for source transparency
 """
@@ -25,7 +25,7 @@ if not CHROMA_DIR.exists() or not any(CHROMA_DIR.iterdir()):
         ingest.build_index(force=True)
 
 st.set_page_config(
-    page_title="NED Guide",
+    page_title="Undergraduate Prospectus 2025",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
@@ -93,12 +93,6 @@ st.markdown("""
     color: #f4f4f5;
 }
 
-.claude-sub {
-    font-size: 0.75rem;
-    color: #9c9a95;
-    font-weight: 400;
-}
-
 .claude-meta {
     display: flex;
     align-items: center;
@@ -133,10 +127,18 @@ div[data-testid="stChatMessage"] {
     margin-bottom: 0.25rem !important;
 }
 
-/* Remove default Streamlit user & assistant avatar icons */
+/* Completely remove and hide all Streamlit avatar elements */
+div[data-testid="stChatMessage"] [data-testid="chatAvatarIcon-assistant"],
+div[data-testid="stChatMessage"] [data-testid="chatAvatarIcon-user"],
+div[data-testid="stChatMessage"] .stChatMessageAvatar,
 div[data-testid="stChatMessage"] img,
 div[data-testid="stChatMessage"] svg {
     display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Assistant Message Typography */
@@ -251,8 +253,7 @@ st.markdown("""
     <div class="claude-brand">
         <div class="claude-avatar">N</div>
         <div>
-            <div class="claude-title">NED Guide</div>
-            <div class="claude-sub">Undergraduate Prospectus 2025</div>
+            <div class="claude-title">Undergraduate Prospectus 2025</div>
         </div>
     </div>
     <div class="claude-meta">
@@ -266,7 +267,7 @@ st.markdown("""
 
 # Initial conversation state
 GREETING = (
-    "Hello. I am NED Guide, an assistant for the official NED Undergraduate Prospectus 2025. "
+    "Hello. I am an assistant for the official NED Undergraduate Prospectus 2025. "
     "I answer using only official prospectus data: eligibility requirements, merit formulas, seat quotas under Regular and Self-Finance, fee schedules, scholarships, and campus regulations."
 )
 
@@ -288,9 +289,9 @@ with col_ctrl2:
         ]
         st.rerun()
 
-# Render conversation history
+# Render conversation history (avatar=None hides default Streamlit bot/human emoji avatars)
 for msg in st.session_state["messages"]:
-    with st.chat_message(msg["role"]):
+    with st.chat_message(msg["role"], avatar=None):
         st.markdown(msg["content"])
         if show_sources and msg.get("sources"):
             with st.expander(f"Prospectus Sources ({len(msg['sources'])} citations)", expanded=False):
@@ -308,7 +309,7 @@ if user_input:
     clean_input = user_input.strip()
     if clean_input:
         st.session_state["messages"].append({"role": "user", "content": clean_input})
-        with st.chat_message("user"):
+        with st.chat_message("user", avatar=None):
             st.markdown(clean_input)
 
         history_for_rag = [
@@ -316,7 +317,7 @@ if user_input:
             for m in st.session_state["messages"][:-1]
         ]
 
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant", avatar=None):
             # Smooth Claude-style status transitions
             with st.status("Retrieving...", expanded=False) as status:
                 st.caption("Scanning 122 prospectus pages and dense neural vectors...")
