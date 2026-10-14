@@ -40,7 +40,11 @@ INTERNAL_WORDS = ["chunk", "embedding", "vector", "retriev", "context window",
 
 # you fill these from the real manual: (question, [keywords that MUST appear in a good answer])
 MANUAL_QUESTIONS = [
-    # ("How do I reset my password?", ["settings", "reset"]),
+    ("Who was the first Vice Chancellor of NED University?", ["Akhoond"]),
+    ("What percentage of attendance is required to appear in semester examinations?", ["75"]),
+    ("What is the fee refund percentage if an admitted student cancels admission up to the 10th day of classes?", ["100"]),
+    ("Where is the Thar Institute of Engineering, Sciences and Technology located?", ["Mithi", "Tharparkar"]),
+    ("What grade and grade points are awarded for scoring 85 to 93 percent?", ["A", "4.0"]),
 ]
 
 HOSTILE_WORDS = ["stupid", "idiot", "shut up", "your fault", "moron", "dumb user", "calm down"]
@@ -313,7 +317,8 @@ def main():
         results.append((cat, expect, tr, problems))
         flag = "FAIL" if problems else ("REVIEW" if expect == "review" else "ok  ")
         label = (turns[0][:60] + ("..." if len(turns[0]) > 60 else "")).replace("\n", " ") or "(empty input)"
-        print(f"[{flag}] {cat:9s} {label}")
+        safe_label = label.encode("ascii", errors="replace").decode("ascii")
+        print(f"[{flag}] {cat:9s} {safe_label}")
         for p in problems:
             print(f"         -> {p}")
 

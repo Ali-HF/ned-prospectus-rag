@@ -6,6 +6,7 @@ Stack (do not substitute anything):
 - Chunking: langchain-text-splitters RecursiveCharacterTextSplitter
 - Embeddings: sentence-transformers model BAAI/bge-small-en-v1.5, run locally through langchain-huggingface
 - Vector store: ChromaDB through langchain-chroma, saved in ./chroma_db, cosine distance
+- Hybrid search: BM25 keyword matching via rank_bm25 merged with vector scores using Reciprocal Rank Fusion (RRF), preserving SCORE_THRESHOLD filtering on vector similarity
 - LLM: Google Gemini through langchain-google-genai ChatGoogleGenerativeAI, model name from env GEMINI_MODEL (default gemini-3.8-flash). In config.py set MAX_TOKENS = 1500 (Gemini 3 models use hidden thinking tokens that count toward the limit) and TEMPERATURE = None. Only pass temperature to the model if it is not None: Google recommends leaving Gemini 3 models at their default of 1.0, and lower values can cause loops. Use the lowest thinking level the integration allows.
 - UI: Streamlit
 - Secrets: GOOGLE_API_KEY in .env, loaded with python-dotenv. Never hardcode keys.

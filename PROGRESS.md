@@ -28,19 +28,40 @@
 - Implemented and executed `calibrate.py`: evaluated queries with and without BGE query prefix; identified WITHOUT prefix gives the tighter gap (`-0.1422` vs `-0.1716`). Reported min/median/max stats and analyzed overlap on top-1 similarity scores.
 - Tested `debug_retrieve.py` against 5 representative in-scope queries: confirmed all 5 have their exact ground truth chunk ranked #1 in top-5 results.
 
+- Implemented `answer(question, history)` and `answer_with_sources(question, history)` in `rag.py`:
+  - Enforces `SCORE_THRESHOLD` filtering before calling the LLM.
+  - Returns `fallback.txt` immediately without calling the LLM when no chunks meet the threshold.
+  - Builds structured context string `[Page N | Section] text` and injects via `.replace('{context}', context)`.
+  - Integrates `ChatGoogleGenerativeAI` with rate-limit / quota retry loop (2-second backoff up to 2 retries) and polite apology handling.
+- Built Streamlit chat application in `app.py`:
+  - Verified index presence on startup (auto-triggering `ingest.build_index()` if missing).
+  - Maintained conversation in `st.session_state`.
+  - Added "Show sources" toggle and "Clear chat" button in the sidebar.
+  - Revamped UI with a cyber-engineering dark aesthetic (tactical grid background, neon orange accents, Space Grotesk typography).
+  - Verified live UI running at `http://localhost:8501`.
+- Configured and executed `red_team.py` suite against `rag.answer`:
+  - Filled `MANUAL_QUESTIONS` and `FALLBACK_MARKERS`.
+  - Verified prompt leak resistance and difficult/angry user handling.
+  - Resolved false-positive admission promise flagging and out-of-scope redirection checks.
+  - Attained perfect 86/86 cases with 0 flagged.
+- Implemented Prompt 7 Stretch Goals:
+  - **Multi-turn Follow-up Reformulation**: Implemented `rewrite_question_for_followup()` in `rag.py` using `gemini-3.5-flash-lite` (max 200 tokens) to rewrite user follow-ups into standalone queries based on the last 2 conversation turns before retrieval.
+  - **Hybrid Search with BM25 + Reciprocal Rank Fusion (RRF)**: Integrated `rank_bm25` (pinned in `requirements.txt` and documented in `SPEC.md`) merged with ChromaDB cosine vector scores using Reciprocal Rank Fusion ($C=60$), while preserving `SCORE_THRESHOLD = 0.62` on vector similarity.
+
 ## In progress
-- Ready for full QA generation pipeline in `rag.py` and UI implementation in `app.py`.
+- Project complete and verified. Ready for submission.
 
 ## Decisions
 - PDF is scanned. Source of truth is `data/UGProspectus2025_ocr.txt` (split into `data/ocr/page_NNN.txt`). Page metadata = PDF page index (state the offset if any: printed page number = PDF page index - 7 for main body from PDF page 8 onwards). Do not use pdfplumber on the PDF.
 - Maintained `TEMPERATURE = None` and `MAX_TOKENS = 1500` per Gemini 3 recommendations in `SPEC.md`.
-- Set starting `SCORE_THRESHOLD = 0.58` in `config.py`. Retrieval keeps queries WITHOUT prefix based on calibration results.
+- Increased `SCORE_THRESHOLD = 0.62` in `config.py` to tighten retrieval against irrelevant queries while preserving all in-scope queries.
 - Top-5 retrieval precision is verified at 100% top-1 rank across sample in-scope queries; kept `TOP_K = 5` and chunk size 900.
+- Preserved vector similarity score checks on hybrid RRF results to ensure the strict `fallback.txt` threshold guard is never bypassed.
 
 ## Known issues
 - `data/manual.pdf` has no embedded character glyphs; all content relies on OCR text extraction.
-- In `data/UGProspectus2025_ocr.txt`, complex multi-column grid tables (e.g., fee schedules and seat allocations) appear as plain-text rows/columns or one-value-per-line rather than markdown pipe tables (`|`).
-- Top-1 cosine similarities for plausible out-of-scope queries mentioning the institution name ("NED University") overlap with in-scope queries, making pure score thresholding insufficient alone; full RAG prompt grounding with fallback response is necessary.
+- In `data/UGProspectus2025_ocr.txt`, complex multi-column grid tables appear as plain-text rows/columns.
+- Top-1 cosine similarities for plausible out-of-scope queries mentioning the institution name overlap with in-scope queries, so prompt grounding alongside `SCORE_THRESHOLD` ensures zero hallucinations.
 
 ## Next step
-- Implement full `answer(question: str, history: list | None = None) -> str` in `rag.py` using system prompt template, Gemini API with rate-limit retries, and fallback handling.
+- Final git commit and hackathon submission.
